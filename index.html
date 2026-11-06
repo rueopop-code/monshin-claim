@@ -69,6 +69,8 @@
 
     // ปุ่มติดตั้ง: Android / คอม (Chrome, Edge) กดติดตั้งได้ทันที · iPhone / iPad บอกวิธีกด แชร์ → เพิ่มไปยังหน้าจอโฮม
     var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    var customerLink = /[?&](pre|t)=/.test(location.search);   // ลิงก์ของลูกค้า (แจ้งเคลม / เช็กสถานะ) ไม่ต้องชวนติดตั้งแอป
+    if (customerLink) standalone = true;
     var later = false; try { later = Date.now() - Number(localStorage.getItem('inst_later') || 0) < 3 * 864e5; } catch (e) { }
     var inst = document.getElementById('inst'), deferred = null;
     function showInst() { if (!standalone && !later) setTimeout(function () { inst.style.display = 'flex'; }, 4000); }
