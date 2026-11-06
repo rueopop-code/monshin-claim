@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ระบบเคลม · มนชิน ซัพพลาย</title>
+  <meta name="theme-color" content="#0F2A4A">
+  <meta name="description" content="ระบบเคลมสินค้า ร้านมนชิน ซัพพลาย">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="เคลมมนชิน">
+  <style>
+    :root{--brand:#0F2A4A;--red:#C8102E;--mute:#AFC1D6}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:var(--brand);font-family:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:hidden}
+    #app{position:fixed;inset:0;padding-top:env(safe-area-inset-top);background:#F3F5F9}
+    #app iframe{width:100%;height:100%;border:0;display:block;background:#F3F5F9}
+    #splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--brand);z-index:5;transition:opacity .35s}
+    #splash.hide{opacity:0;pointer-events:none}
+    #splash img{width:96px;height:96px;border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    #splash b{font-size:18px}#splash small{color:var(--mute);font-size:13px}
+    .spin{width:28px;height:28px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:s 1s linear infinite;margin-top:8px}
+    @keyframes s{to{transform:rotate(360deg)}}
+    #msg{display:none;max-width:340px;text-align:center;color:var(--mute);font-size:14px;line-height:1.6;padding:0 20px}
+    #msg button{margin-top:12px;background:var(--red);color:#fff;border:0;border-radius:10px;padding:10px 18px;font:inherit;font-weight:600;cursor:pointer}
+    #inst{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:10px;background:#fff;color:#0F172A;border-radius:14px;padding:10px 10px 10px 12px;box-shadow:0 12px 36px rgba(8,18,34,.35);width:min(420px,calc(100vw - 24px));border-top:3px solid var(--red)}
+    #inst img{width:40px;height:40px;border-radius:10px}
+    #inst div{flex:1;font-size:13.5px;line-height:1.4}#inst div b{display:block;font-size:14.5px}
+    #inst button{border:0;border-radius:9px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer}
+    #iGo{background:var(--red);color:#fff}#iNo{background:#F1F5F9;color:#475569}
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="splash"><img src="icon-192.png" alt=""><b>ระบบเคลมสินค้า</b><small>มนชิน ซัพพลาย</small><div class="spin" id="spin"></div><div id="msg"></div></div>
+  <div id="inst"><img src="icon-192.png" alt=""><div><b>ติดตั้งเป็นแอป</b><span id="iTxt">เปิดจากไอคอนได้เลย ไม่ต้องหาลิงก์</span></div><button id="iNo">ไว้ทีหลัง</button><button id="iGo">ติดตั้ง</button></div>
+  <script>
+    /* ▼▼▼ วางลิงก์เว็บแอป Apps Script ตรงนี้ (จาก ทำให้ใช้งานได้ → จัดการ → URL เว็บแอป · ลงท้ายด้วย /exec) ▼▼▼ */
+    var APP_URL = 'https://script.google.com/macros/s/AKfycbwlT8jAUnv44fjWS8qXt5var-z0VoY_O7X_DZbkOfzRVwxC0SBMvnFTZ7lq9ErvjRgNcw/exec';
+    /* ▲▲▲ ------------------------------------------------------------------------------------- ▲▲▲ */
+
+    var splash = document.getElementById('splash'), msg = document.getElementById('msg');
+    function fail(t) { document.getElementById('spin').style.display = 'none'; msg.style.display = 'block'; msg.innerHTML = t; }
+    if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(APP_URL)) {
+      fail('ยังไม่ได้ใส่ลิงก์เว็บแอปในไฟล์ index.html<br>(บรรทัด APP_URL)');
+    } else if (!navigator.onLine) {
+      fail('ไม่มีอินเทอร์เน็ต<br>ต่อเน็ตแล้วลองใหม่<br><button onclick="location.reload()">ลองใหม่</button>');
+    } else {
+      var f = document.createElement('iframe');
+      f.src = APP_URL + location.search;                      // ส่งต่อ ?id= / ?ap= / ?t= จากลิงก์ LINE
+      f.allow = 'camera; clipboard-read; clipboard-write; fullscreen';
+      f.title = 'ระบบเคลมสินค้า';
+      var done = false, timer = setTimeout(function () { if (!done) fail('โหลดนานผิดปกติ ตรวจอินเทอร์เน็ต<br><button onclick="location.reload()">ลองใหม่</button>'); }, 25000);
+      f.onload = function () { done = true; clearTimeout(timer); setTimeout(function () { splash.classList.add('hide'); }, 250); };
+      document.getElementById('app').appendChild(f);
+    }
+    addEventListener('online', function () { if (msg.style.display === 'block') location.reload(); });
+
+    // บันทึกหน้าครอบไว้ในเครื่อง (ทำให้ติดตั้งได้ + เปิดไว)
+    if ('serviceWorker' in navigator) addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () { }); });
+
+    // ปุ่มติดตั้ง: Android / คอม (Chrome, Edge) กดติดตั้งได้ทันที · iPhone / iPad บอกวิธีกด แชร์ → เพิ่มไปยังหน้าจอโฮม
+    var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    var later = false; try { later = Date.now() - Number(localStorage.getItem('inst_later') || 0) < 3 * 864e5; } catch (e) { }
+    var inst = document.getElementById('inst'), deferred = null;
+    function showInst() { if (!standalone && !later) setTimeout(function () { inst.style.display = 'flex'; }, 4000); }
+    addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; showInst(); });
+    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (ios && !standalone) {
+      document.getElementById('iTxt').innerHTML = 'กด <b style="display:inline">แชร์ ⬆︎</b> แล้วเลือก <b style="display:inline">เพิ่มไปยังหน้าจอโฮม</b>';
+      document.getElementById('iGo').textContent = 'เข้าใจแล้ว'; showInst();
+    }
+    document.getElementById('iGo').onclick = function () {
+      if (deferred) { deferred.prompt(); deferred.userChoice.finally(function () { deferred = null; inst.style.display = 'none'; }); }
+      else inst.style.display = 'none';
+    };
+    document.getElementById('iNo').onclick = function () { inst.style.display = 'none'; try { localStorage.setItem('inst_later', Date.now()); } catch (e) { } };
+    addEventListener('appinstalled', function () { inst.style.display = 'none'; });
+  </script>
+</body>
+</html>

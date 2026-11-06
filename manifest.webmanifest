@@ -1,0 +1,19 @@
+{
+  "name": "ระบบเคลมสินค้า · มนชิน ซัพพลาย",
+  "short_name": "เคลมมนชิน",
+  "description": "รับเคลม ติดตามสถานะ อนุมัติ และพิมพ์เอกสารเคลมสินค้า ร้านมนชิน ซัพพลาย",
+  "lang": "th",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#0F2A4A",
+  "theme_color": "#0F2A4A",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
