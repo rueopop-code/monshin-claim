@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>ระบบเคลม · มนชิน ซัพพลาย</title>
   <meta name="theme-color" content="#0F2A4A">
   <meta name="description" content="ระบบเคลมสินค้า ร้านมนชิน ซัพพลาย">
@@ -12,12 +12,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-title" content="เคลมมนชิน">
   <style>
     :root{--brand:#0F2A4A;--red:#C8102E;--mute:#AFC1D6}
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:var(--brand);font-family:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:hidden}
-    #app{position:fixed;inset:0;padding-top:env(safe-area-inset-top);background:#F3F5F9}
+    html,body{margin:0;height:100%;background:var(--brand);font-family:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;-webkit-text-size-adjust:100%;-webkit-user-select:none;user-select:none}
+    #app{position:fixed;inset:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:linear-gradient(var(--brand) 0 env(safe-area-inset-top),#fff env(safe-area-inset-top))}
     #app iframe{width:100%;height:100%;border:0;display:block;background:#F3F5F9}
     #splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--brand);z-index:5;transition:opacity .35s}
     #splash.hide{opacity:0;pointer-events:none}
@@ -43,6 +44,9 @@
     var APP_URL = 'https://script.google.com/macros/s/AKfycbwlT8jAUnv44fjWS8qXt5var-z0VoY_O7X_DZbkOfzRVwxC0SBMvnFTZ7lq9ErvjRgNcw/exec';
     /* ▲▲▲ ------------------------------------------------------------------------------------- ▲▲▲ */
 
+    // ล็อกการซูมทุกแบบ (ถ่างนิ้ว / 2 นิ้ว) — การแตะสองครั้งปิดด้วย touch-action แล้ว
+    ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (t) { document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+    document.addEventListener('touchmove', function (e) { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive: false });
     var splash = document.getElementById('splash'), msg = document.getElementById('msg');
     function fail(t) { document.getElementById('spin').style.display = 'none'; msg.style.display = 'block'; msg.innerHTML = t; }
     if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(APP_URL)) {
